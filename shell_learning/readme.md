@@ -96,3 +96,16 @@ for i in $@; do
 done
 ```
 
+
+## shell 数组
+只支持一维数组。数组元素的下标由**0**开始。数组由**括号**表示
+```shell
+array=(A B C D)
+```
+### 读取数组
+```shell
+${array[index]}
+```
+
+
+

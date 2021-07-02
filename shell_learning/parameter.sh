@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 echo "执行的文件名：$0"
 echo "文件输入的第一个参数为：$1"
 echo $*
