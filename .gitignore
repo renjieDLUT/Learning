@@ -2,3 +2,8 @@ build/*
 .ipynb_checkpoints/*
 .vscode/*
 carla/outputs
+carla/catkin_ws/build
+carla/catkin_ws/devel
+carla/catkin_ws/.catkin_workspace
+ROS-Academy-for-Beginners
+catkin_ws
