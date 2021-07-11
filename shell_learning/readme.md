@@ -80,10 +80,10 @@ echo "执行的文件名：$0"
 参数        |                   说明
 ---------     |                ------
 $#           | 传递到脚本的参数个数
-$*           | 所有向脚本传递的参数 
+$*           | 所有向脚本传递的参数。 <font color=#FF000>“$*”，输出为：“$1 $2 ... $n”</font> 
 $$          | 当前进程ID号
 $!          |  后台运行的最后一个进程ID号
-$@        |  与$*相同，但是使用时加引号，并在引号中返回每个参数。
+$@        |  与$*相同，但是使用时加引号，并在引号中返回每个参数。<font color=#FF000>“$@”，输出为：“$1“ ”$2“ ... "、”$n”</font> 
 $-          |  显示shell使用的当前选项
 $?          |   显示最后命令的退出状态。0表示没有错误，其他任何值表明有错误
 ```shell
@@ -183,5 +183,223 @@ echo "it is a test"
 ### 显示结果定向至文件
 ```shell
 
+echo "it is a test" >$file
 ```
 
+## printf命令
+printf使用引用文本或空格分隔的参数，外面可以在printf中使用格式化字符串，还可以制定字符串的宽度和左右对齐方式等。默认printf不会像echo自动添加换行符，需手动添加‘\n’ 。
+```shell
+printf format-string   [arguments ...]
+
+# format-string: 格式控制字符串
+# arguments: 为参数列表
+```
+```shell
+printf "%-10s %-8s %-4s\n" 姓名 性别 体重kg
+printf "%-10s %-8s %-4s\n"任杰 男 62kg
+```
+**%s %c %d %f**: 格式替代符
+格式替代符 | 说明
+------------- |----------
+%s    | 输出一个字符串
+%d    | 输出整型
+%c    | 输出一个字符
+%f     | 输出实数  （浮点型）
+%-10s | 字符串的**宽度**为10  （**‘ - ’ 表示左对齐，没有则表示右对齐**）
+%-4.2f |格式化小数，其中**‘ .2 ’**指保留2位小数
+
+```shell
+# format-string为双引号
+printf "%d %s\n" 1 "abc"
+
+# 单引号与双引号效果一样
+printf '%d %s\n' 1 "abc"
+
+# 没有引号也可以输出
+printf %s abcdef
+
+# 格式只指定了一个参数，但多出的参数仍然会按照该格式输出，format-string 被重用
+printf %s abc def
+
+printf "%s\n" abc def
+
+printf "%s %s %s\n" a b c d e f g h i j
+
+# 如果没有 arguments，那么 %s 用NULL代替，%d 用 0 代替
+printf "%s and %d \n"
+```
+
+## test命令
+test命令用于检查某个条件是否成立，可以进行数值、字符和文件
+### 数值测试
+参数   |  说明
+------ |--------
+-eq   | **等于** 则为真
+-ne   |**不等**与则为真
+-gt   | **大于**则为真
+-ge  | **大于等于**则为真
+-lt    | **小于**则为真
+-le | **小于等于**则为真
+
+```python
+if test $[num1]  -eq $[num2]
+then
+		echo "两个数相等！"
+else
+		echo "两个数不相等！"
+fi
+```
+
+### 字符串测试
+参数  |说明
+------ | ---------
+=      | 等于
+!=    | 不等于
+-z 字符串| 字符串的长度为零
+-n 字符串|字符串的长度不为零
+
+```python
+num1="ru1noob"
+num2="runoob"
+if test $num1 = $num2
+then
+    echo '两个字符串相等!'
+else
+    echo '两个字符串不相等!'
+fi
+```
+### 文件测试
+参数                |说明
+-------------------|--------
+-e 文件名        |文件存在
+-r 文件名        |
+
+## 流程控制
+### if-else
+```shell
+if condition
+then
+		command1
+		command2
+		...
+		commandn
+fi
+```
+```shell
+if  [ $(ps -ef |grep -c "ssh") -gt 1 ]; then echo "true";fi
+```
+### if-elif-else
+```shell
+if condition1
+then 
+		command11
+		command12
+		...
+		command1n
+elif condition2
+then
+		command21
+		command22
+		...
+		command2n
+else
+		command31
+fi
+```
+### for 循环
+```shell
+for var in item1 item2 ... itemN
+do
+		command1
+		command2
+		...
+		commandN
+done
+```
+### while语句
+```shell
+while condition
+do
+		command
+done
+```
+```shell
+int=1
+while ( (  $int<=5 ) )
+do
+	echo $int
+	let "int++"
+done
+```
+### 无限循环
+```shell
+while ：
+do
+	command
+done
+```
+
+### until循环
+```shell
+until condition
+do
+		command
+done
+```
+### case ... esac
+```shell
+echo '输入 1 到 4 之间的数字:'
+echo '你输入的数字为:'
+read aNum
+case $aNum in
+    1)  echo '你选择了 1'
+    ;;
+    2)  echo '你选择了 2'
+    ;;
+    3)  echo '你选择了 3'
+    ;;
+    4)  echo '你选择了 4'
+    ;;
+    *)  echo '你没有输入 1 到 4 之间的数字'
+    ;;
+esac
+```
+### 跳出循环（break命令、continue命令）
+```shell
+while :
+do
+    echo -n "输入 1 到 5 之间的数字:"
+    read aNum
+    case $aNum in
+        1|2|3|4|5) echo "你输入的数字为 $aNum!"
+        ;;
+        *) echo "你输入的数字不是 1 到 5 之间的! 游戏结束"
+            break
+        ;;
+    esac
+done
+```
+```shell
+while :
+do
+    echo -n "输入 1 到 5 之间的数字: "
+    read aNum
+    case $aNum in
+        1|2|3|4|5) echo "你输入的数字为 $aNum!"
+        ;;
+        *) echo "你输入的数字不是 1 到 5 之间的!"
+            continue
+            echo "游戏结束"
+        ;;
+    esac
+done
+```
+
+## 函数
+linux shell 可以用户定义函数，然后在shell脚本中随便调用。
+```shell
+[ function ] funname [()]
+{
+		action
+		[ return int ]
+}
