@@ -124,7 +124,7 @@ while True:
     data = sensor_queue.get(block=True)
 ```
 
-#### traffic manager设置
+### traffic manager设置
 ```python
 traffic_manager = client.get_trafficmanager(8000)
 traffic_manager.set_synchronous_mode(True)
@@ -172,3 +172,19 @@ traffic_manager.set_hybrid_physics_mode(True)
 # tm里面每一辆车都是默认速度的80%
 traffic_manager.global_percentage_speed_difference(80)
 ```
+## ros bridge
+### 安装
+###  ROS bridge package
+#### carla配置
+选项                       |               参数        |说明
+-------------------------|  ---------------------- |-------------
+use_sim_time       | True/False          | ROS时间设置为carla仿真时间而不是系统时间
+host and port    |    -             		| 网络设置
+timeout      	|    		- 		|等待连接延时
+passive      |  True/False          |  被动模式；当用于同步模式时，其他client tick the world
+synchronous_mode |True/False | 同步/异步模式
+synchronous_mode_wait_for_vehicle_control_command  |  True/False |  
+fixed_delta_seconds | < 0.1  |  固定步长
+ego_vehicle_role_name |    |
+town   |					    |  地图名
+register_all_sensors |   True/False   | False ：仅注册由bridge生成的sensor；True: 注册仿真中所有的sensor
