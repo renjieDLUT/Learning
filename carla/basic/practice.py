@@ -8,6 +8,7 @@ def main():
     world = client.get_world()
     print(world.get_map().name)
     print(client.get_available_maps())
+    
 
 
 if __name__ == "__main__":

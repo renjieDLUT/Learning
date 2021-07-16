@@ -1,12 +1,21 @@
 ## Client 和 World
 ```python
+#连接服务端server
 client = carla.Client('localhost', 2000)
+#设置连接延时
 client.set_timeout(2)
+#retrieve the current world fairly easily
 world = client.get_world()
+
 weather = carla.WeatherParameters(cloudiness=10.0,\
                                   precipitation=10.0,\
                                   fog_density=10.0)
+#设置world天气
 world.set_weather(weather)
+#加载“Town01”地图
+client.load_world("Town01")
+#获取可用地图信息
+client.get_available_Maps()
 ```
 ## Actor 与 Blueprint
 
